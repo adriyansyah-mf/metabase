@@ -68,7 +68,7 @@ class MetabaseScanner:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Metabase Scanner")
-    parser.add_argument("-u", "--url", help="URL Metabase", required=True)
+    parser.add_argument("-u", "--url", help="URL Metabase", required=False)
     parser.add_argument("-m", "--mass", help="Mass Token Metabase", required=False)
 
     args = parser.parse_args()
@@ -77,6 +77,13 @@ if __name__ == "__main__":
             for line in f:
                 scanner = MetabaseScanner(line)
                 scanner()
+                # save to file
+                if scanner._test_vuln(scanner._get_tokenn()):
+                    with open("vuln_metabase.txt", "a") as f:
+                        f.write(line)
+
+
+                
     else:
         scanner = MetabaseScanner(args.url)
         scanner()
